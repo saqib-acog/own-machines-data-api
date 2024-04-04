@@ -8,3 +8,5 @@ services:
     volumes:
       - ./:/machine-data-app
     restart: always
+    labels:
+      - description='hello this is default description'

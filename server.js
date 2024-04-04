@@ -10,6 +10,10 @@ import {
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.get("/", (req, res)=>{
+  res.status(300).redirect("/api/data")
+})
+
 app.get("/api/data", async (req, res) => {
   try {
     // Fetch users, cpu info, and memory info in parallel

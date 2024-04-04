@@ -1,4 +1,9 @@
 import si from "systeminformation";
+import util from 'util';
+import { exec } from 'child_process';
+import { parseString } from 'xml2js';
+
+const execPromise = util.promisify(exec);
 
 export function getUptime() {
   return si.time().uptime;
@@ -33,9 +38,31 @@ export async function getMemoryInfo() {
 
 export async function getGpuInfo() {
   try {
-    const gpuInfo = await si.graphics();
+    const { stdout, stderr } = await execPromise('nvidia-smi -q -x');
+    
+    if (stderr) {
+      throw new Error(`Error executing command: ${stderr}`);
+    }
+    
+    let gpuInfo = '';
+    parseString(stdout, (err, result) => {
+      if (err) {
+        throw new Error('Error parsing XML:', err);
+      }
+      gpuInfo = JSON.stringify(result, null, 2);
+    });
+    console.log(gpuInfo.nvidia_smi_log)
     return gpuInfo;
-  } catch (err) {
+  } catch(err) {
     throw new Error("Error getting gpu info", err);
   }
 }
+
+// export async function getGpuInfo() {
+//   try {
+//     const gpuInfo = await si.graphics();
+//     return gpuInfo;
+//   } catch (err) {
+//     throw new Error("Error getting gpu info", err);
+//   }
+// }
