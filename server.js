@@ -17,8 +17,8 @@ app.get("/api/data", async (req, res) => {
       getUsers(),
       getCpuLoadInfo(),
       getMemoryInfo(),
+      getGpuInfo(),
     ]);
-    // getGpuInfo(),
 
     // Extract necessary information
     const uptimeInSeconds = getUptime();
@@ -35,12 +35,11 @@ app.get("/api/data", async (req, res) => {
       totalMemory: total,
       freeMemory: free,
       usedMemory: used,
+      gpu: gpuInfo,
       //   gpuTotal: gpuTotal,
       //   gpuFree: gpuFree,
       //   gpuUsage: gpuUsage,
     };
-
-    console.log(getGpuInfo());
 
     // Send data
     res.json(machineData);

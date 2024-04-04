@@ -1,5 +1,7 @@
 FROM node:alpine
-WORKDIR /machinedataproject
+WORKDIR /machine-data-app
+COPY package.json ./
+RUN npm install
+COPY node_modules .
 COPY . .
-RUN npm i
 CMD ["npm", "run", "dev"]

@@ -1,0 +1,10 @@
+version: '3'
+services:
+
+  machine-data:
+    build: .
+    container_name: machine-data
+    image: machine-data-image
+    volumes:
+      - ./:/machine-data-app
+    restart: always
